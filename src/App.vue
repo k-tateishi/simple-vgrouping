@@ -1,12 +1,20 @@
 <template>
   <div id="app">
-    <h1>{{ msg }}</h1>
+    <h1 class="is-size-1">{{ msg }}</h1>
+    <grouping-component />
+    <footer-component />
   </div>
 </template>
 
 <script>
+import GroupingComponent from './components/Grouping';
+import FooterComponent from './components/Footer';
 export default {
   name: 'app',
+  components: {
+    'grouping-component': GroupingComponent,
+    'footer-component': FooterComponent
+  },
   data () {
     return {
       msg: '班分けアプリ'
