@@ -2,22 +2,35 @@
   <div>
     <div class="columns">
       <div class="column">
-        <label class="label">メンバー名</label>
-        <div class="field has-addons">
-          <div class="control has-icons-left">
-            <input class="input" type="text" placeholder="山田 太郎" v-model="userName">
-            <span class="icon is-small is-left">
-              <i class="far fa-user"></i>
-            </span>
-          </div>
-          <div class="control">
-            <a class="button is-info" @click="addUser">
-              追加
-            </a>
+        <label class="label">メンバー名
+          &nbsp;&nbsp;
+          <input type="checkbox" @click="toggleInputMode">
+          テキストエリア
+        </label>
+        <div v-show="inputMode">
+          <div class="field">
+            <div class="control">
+              <textarea class="textarea is-info" type="text" v-model="textareaUsers"></textarea>
+            </div>
           </div>
         </div>
-        <div v-for="name in usersList" :key="name">
-          <div v-show="name">{{ name }} <a class="delete" @click="deleteUser(name)"></a></div>
+        <div v-show="!inputMode">
+          <div class="field has-addons">
+            <div class="control has-icons-left">
+              <input class="input" type="text" placeholder="山田 太郎" v-model="userName">
+              <span class="icon is-small is-left">
+                <i class="far fa-user"></i>
+              </span>
+            </div>
+            <div class="control">
+              <a class="button is-info" @click="addUser">
+                追加
+              </a>
+            </div>
+          </div>
+          <div v-for="name in usersList" :key="name">
+            <div v-show="name">{{ name }} <a class="delete" @click="deleteUser(name)"></a></div>
+          </div>
         </div>
       </div>
 
@@ -71,10 +84,12 @@
     data () {
       return {
         users: [],
-        userName: "",
+        userName: '',
         groupNumber: null,
         makedGroups: [],
-        groupedUsers: []
+        groupedUsers: [],
+        inputMode: false,
+        textareaUsers: ''
       }
     },
     methods: {
@@ -84,7 +99,7 @@
           return;
         }
         this.users.push(this.userName);
-        this.userName = "";
+        this.userName = '';
       },
       deleteUser(name) {
         var deleted = this.users.filter((e) => {
@@ -100,12 +115,13 @@
         }
       },
       makeGroup() {
+        this.syncUsers();
         this.makedGroups = [];
         this.groupedUsers = [];
         // Group names
         this.initializeGroupNumber();
         for (var i=1; i<=this.groupNumber; i++) {
-          this.makedGroups.push("グループ" + i);
+          this.makedGroups.push('グループ' + i);
         }
 
         // Make random users
@@ -129,7 +145,7 @@
         for (var l=0; l<this.users.length; l++) {
           var groupedUser = {};
           groupedUser.id = l;
-          groupedUser.group = "グループ" + groupNumberIndex;
+          groupedUser.group = 'グループ' + groupNumberIndex;
           groupedUser.user = this.users[randomUserIndex[l]];
           this.groupedUsers.push(groupedUser);
           groupNumberIndex++;
@@ -154,6 +170,25 @@
           array.push(i)
         }
         return array;
+      },
+      toggleInputMode() {
+        this.syncUsers();
+        this.inputMode = !this.inputMode;
+      },
+      syncUsers() {
+        if (this.inputMode) {
+          var textareaList = this.textareaUsers.split('\n');
+          this.users = textareaList.filter((x, i, self) => {
+              // delete empty and duplicate
+              return self && self.length > 0 && self.indexOf(x) === i;
+          });
+        } else {
+          this.textareaUsers = '';
+          for (user in this.users) {
+            this.textareaUsers += user;
+            this.textareaUsers += '\n';
+          }
+        }
       }
     },
     computed: {
@@ -173,14 +208,14 @@
         return this.makedGroups;
       },
       data2Csv: function() {
-        var csv = "";
+        var csv = '';
         for (var i=0; i<this.makedGroups.length; i++) {
           csv += this.makedGroups[i];
           for (var j=0; j<this.groupedUsersList(this.makedGroups[i]).length; j++) {
-            csv += ", ";
+            csv += ', ';
             csv += this.groupedUsersList(this.makedGroups[i])[j].user;
           }
-          csv += "\n";
+          csv += '\n';
         }
         return csv;
       }
