@@ -33,24 +33,35 @@
       </div>
     </div>
 
-    <!-- TODO: カラム対応、色分け -->
-    <div v-for="group in makedGroupsList" :key="group">
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
-            {{ group }}
-          </p>
-        </header>
-        <div class="card-content">
-          <div class="content" v-for="groupedUser in groupedUsersList(group)" :key="groupedUser.id">
-            <p>{{ groupedUser.user }}</p>
+    <div class="columns" v-for="idx in range(0, Math.ceil(makedGroupsList.length / 3)-1)" :key="idx">
+      <div class="column" v-for="gidx in range(0, 2)" :key="gidx">
+        <div class="card" v-bind:class="{'is-invisible': !makedGroupsList[gidx + idx * 3]}">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{ makedGroupsList[gidx + idx * 3] }}
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content has-text-left" v-for="groupedUser in groupedUsersList(makedGroupsList[gidx + idx * 3])" :key="groupedUser.id">
+              {{ groupedUser.user }}
+            </div>
+            <div class="content" v-show="groupedUsersList(makedGroupsList[gidx + idx * 3]).length === 0">
+              メンバーがいません
+            </div>
           </div>
+          <footer class="card-footer">
+          </footer>
         </div>
-        <footer class="card-footer">
-        </footer>
       </div>
     </div>
-    <!-- TODO: CSV表示 -->
+    <div v-show="data2Csv">
+      <label class="label has-text-left">CSVデータ</label>
+      <div class="field">
+        <div class="control">
+          <textarea class="textarea is-warning" type="text" v-model="data2Csv" readonly></textarea>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -89,6 +100,8 @@
         }
       },
       makeGroup() {
+        this.makedGroups = [];
+        this.groupedUsers = [];
         // Group names
         this.initializeGroupNumber();
         for (var i=1; i<=this.groupNumber; i++) {
@@ -134,6 +147,13 @@
             return e;
           }
         });
+      },
+      range(from, to) {
+        var array = [];
+        for (var i=from; i<=to; i++) {
+          array.push(i)
+        }
+        return array;
       }
     },
     computed: {
@@ -151,6 +171,18 @@
       },
       makedGroupsList: function() {
         return this.makedGroups;
+      },
+      data2Csv: function() {
+        var csv = "";
+        for (var i=0; i<this.makedGroups.length; i++) {
+          csv += this.makedGroups[i];
+          for (var j=0; j<this.groupedUsersList(this.makedGroups[i]).length; j++) {
+            csv += ", ";
+            csv += this.groupedUsersList(this.makedGroups[i])[j].user;
+          }
+          csv += "\n";
+        }
+        return csv;
       }
     }
   }
