@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <h1 class="is-size-1">{{ msg }}</h1>
-    <grouping-component />
+    <section class="section">
+      <div class="container">
+        <h1 class="is-size-1">{{ msg }}</h1>
+        <grouping-component />
+      </div>
+    </section>
     <footer-component />
   </div>
 </template>
