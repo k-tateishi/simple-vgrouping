@@ -3,6 +3,7 @@
     <section class="section">
       <div class="container">
         <h1 class="is-size-1">{{ msg }}</h1>
+        <information-component />
         <grouping-component />
       </div>
     </section>
@@ -11,11 +12,13 @@
 </template>
 
 <script>
+import InformatinComponent from './components/Information'
 import GroupingComponent from './components/Grouping';
 import FooterComponent from './components/Footer';
 export default {
   name: 'app',
   components: {
+    'information-component': InformatinComponent,
     'grouping-component': GroupingComponent,
     'footer-component': FooterComponent
   },
