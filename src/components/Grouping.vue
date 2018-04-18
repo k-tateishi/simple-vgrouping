@@ -32,17 +32,22 @@
             <div v-show="name">{{ name }} <a class="delete" @click="deleteUser(name)"></a></div>
           </div>
         </div>
+        <div class="has-text-left has-text-danger is-size-6" v-show="isMemberError">
+          メンバーを入力して下さい。
+        </div>
       </div>
 
       <div class="column">
         <label class="label">グループ数</label>
         <input class="input" type="text" placeholder="3" v-model="groupNumber">
+        <div class="has-text-left has-text-danger" v-show="isGroupNumberError">
+          グループ数を半角整数で入力して下さい。
+        </div>
       </div>
 
       <div class="column">
         <label class="label">&nbsp;</label>
-        <button class="button is-info" v-show="inputValidation" @click="makeGroup">この条件で班分けする！</button>
-        <button class="button is-info" v-show="!inputValidation" disabled>条件を設定してください</button>
+        <button class="button is-info" @click="makeGroup">この条件で班分けする！</button>
       </div>
     </div>
 
@@ -89,7 +94,9 @@
         makedGroups: [],
         groupedUsers: [],
         inputMode: false,
-        textareaUsers: ''
+        textareaUsers: '',
+        isMemberError: false,
+        isGroupNumberError: false,
       }
     },
     methods: {
@@ -115,6 +122,13 @@
         }
       },
       makeGroup() {
+        if (!this.inputValidation) {
+          this.showErrorMessage();
+          return;
+        } else {
+          this.isMemberError = false;
+          this.isGroupNumberError = false;
+        }
         this.syncUsers();
         this.makedGroups = [];
         this.groupedUsers = [];
@@ -184,10 +198,22 @@
           });
         } else {
           this.textareaUsers = '';
-          for (user in this.users) {
+          for (var user in this.users) {
             this.textareaUsers += user;
             this.textareaUsers += '\n';
           }
+        }
+      },
+      showErrorMessage() {
+        if (!this.validUsers || !this.validUsers) {
+          this.isMemberError = true;
+        } else {
+          this.isMemberError = false;
+        }
+        if (!this.validNumber) {
+          this.isGroupNumberError = true;
+        } else {
+          this.isGroupNumberError = false;
         }
       }
     },
