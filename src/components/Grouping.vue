@@ -63,7 +63,7 @@
             <div class="content has-text-left" v-for="groupedUser in groupedUsersList(makedGroupsList[gidx + idx * 3])" :key="groupedUser.id">
               {{ groupedUser.user }}
             </div>
-            <div class="content" v-show="groupedUsersList(makedGroupsList[gidx + idx * 3]).length === 0">
+            <div class="content has-text-danger" v-show="groupedUsersList(makedGroupsList[gidx + idx * 3]).length === 0">
               メンバーがいません
             </div>
           </div>
