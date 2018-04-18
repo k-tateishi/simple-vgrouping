@@ -198,11 +198,14 @@
       validUsers: function() {
         return this.users && this.users.length > 0;
       },
+      validTextarea: function() {
+        return this.textareaUsers && this.textareaUsers.length > 0;
+      },
       validNumber: function() {
         return this.groupNumber && this.groupNumber.search(/^[0-9]+$/) === 0;
       },
       inputValidation: function() {
-        return this.validUsers && this.validNumber;
+        return (this.validUsers || this.validTextarea) && this.validNumber;
       },
       makedGroupsList: function() {
         return this.makedGroups;
