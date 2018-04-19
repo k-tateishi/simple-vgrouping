@@ -82,6 +82,7 @@
           <textarea class="textarea is-warning" type="text" v-model="data2Csv" readonly></textarea>
         </div>
       </div>
+      <button class="button is-warning">csvダウンロード</button>
     </div>
   </div>
 </template>
