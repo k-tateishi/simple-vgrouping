@@ -109,6 +109,9 @@
         if (this.users.indexOf(this.userName) > 0) {
           this.isMemberAddError = true;
           return;
+        } else if (this.users.indexOf(this.userName) === 0) {
+          // only blank duplicate
+          return;
         }
         this.isMemberAddError = false;
         this.users.push(this.userName);
