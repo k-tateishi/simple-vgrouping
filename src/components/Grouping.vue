@@ -35,6 +35,9 @@
         <div class="has-text-left has-text-danger is-size-6" v-show="isMemberError">
           メンバーを入力して下さい。
         </div>
+        <div class="has-text-left has-text-danger is-size-6" v-show="isMemberAddError">
+          メンバー名が重複しています。
+        </div>
       </div>
 
       <div class="column">
@@ -97,14 +100,16 @@
         textareaUsers: '',
         isMemberError: false,
         isGroupNumberError: false,
+        isMemberAddError: false
       }
     },
     methods: {
       addUser() {
-        if (this.users.indexOf(this.userName) >= 0) {
-          // TODO: エラーメッセージを出す
+        if (this.users.indexOf(this.userName) > 0) {
+          this.isMemberAddError = true;
           return;
         }
+        this.isMemberAddError = false;
         this.users.push(this.userName);
         this.userName = '';
       },
@@ -122,6 +127,7 @@
         }
       },
       makeGroup() {
+        this.isMemberAddError = false;
         if (!this.inputValidation) {
           this.showErrorMessage();
           return;
@@ -186,6 +192,7 @@
         return array;
       },
       toggleInputMode() {
+        this.isMemberAddError = false;
         this.syncUsers();
         this.inputMode = !this.inputMode;
       },
