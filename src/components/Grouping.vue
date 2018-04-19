@@ -211,8 +211,8 @@
           });
         } else {
           this.textareaUsers = '';
-          for (var user in this.users) {
-            this.textareaUsers += user;
+          for (var i=0; i<this.users.length; i++) {
+            this.textareaUsers += this.users[i];
             this.textareaUsers += '\n';
           }
         }
