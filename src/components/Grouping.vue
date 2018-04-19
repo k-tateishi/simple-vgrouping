@@ -82,7 +82,7 @@
           <textarea class="textarea is-warning" type="text" v-model="data2Csv" readonly></textarea>
         </div>
       </div>
-      <button class="button is-warning">csvダウンロード</button>
+      <a class="button is-warning" v-bind:href="downloadHref" download="vgroup.csv" @click="downloadCsv">CSVダウンロード</a>
     </div>
   </div>
 </template>
@@ -101,7 +101,8 @@
         textareaUsers: '',
         isMemberError: false,
         isGroupNumberError: false,
-        isMemberAddError: false
+        isMemberAddError: false,
+        downloadHref: '#'
       }
     },
     methods: {
@@ -177,6 +178,7 @@
             groupNumberIndex = 1;
           }
         }
+        this.setDownloadLink();
       },
       groupedUsersList(groupName) {
         if (!groupName || groupName.length <= 0) {
@@ -226,6 +228,20 @@
         } else {
           this.isGroupNumberError = false;
         }
+      },
+      createCsv() {
+        var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+        return new Blob([bom, this.data2Csv], {'type': 'text/plain'});
+      },
+      downloadCsv() {
+        // for IE
+        if (window.navigator.msSaveBlob) {
+          window.navigator.msSaveBlob(this.createCsv(), 'vgroup.csv');
+        }
+      },
+      setDownloadLink() {
+        // for other browser
+        this.downloadHref = window.URL.createObjectURL(this.createCsv());
       }
     },
     computed: {
