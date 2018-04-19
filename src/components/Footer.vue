@@ -4,7 +4,7 @@
         <div class="content has-text-centered">
           <p>
             <span>
-              {{ year }} simple-vgrouping
+              Copyright <i class="far fa-copyright"></i> {{ year }} k-tateishi All Rights Reserved.
             </span>
           </p>
         </div>
