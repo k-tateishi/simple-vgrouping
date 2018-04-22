@@ -2,7 +2,16 @@
 
 > A simple grouping tool
 
-## Build Setup
+## Demo
+
+[Demo Page](https://bit.ly/2F7glLY)
+
+## Environments
+
+* node `8.0.0`
+* npm `5.8.0`
+
+## Build
 
 ``` bash
 # install dependencies
@@ -15,4 +24,6 @@ npm run dev
 npm run build
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Author
+
+k-tateishi
